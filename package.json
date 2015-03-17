@@ -1,0 +1,19 @@
+{
+  "name": "barcode-converter",
+  "version": "1.0.0",
+  "repository": "https://github.com/leibale/barcode-converter",
+  "keywords": [
+    "barcode",
+    "converter",
+    "barcode converter",
+    "convert barcode",
+    "upc-a",
+    "upca",
+    "upc-e",
+    "upce"
+  ],
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  }
+}
