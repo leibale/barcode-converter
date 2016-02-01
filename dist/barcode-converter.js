@@ -20,7 +20,7 @@ module.exports = {
             throw new Error('Unknown type ' + toType);
         }
 
-        types[toType].convert(fromType, barcode);
+        return types[toType].convert(fromType, barcode);
     }
 };
 },{"./types/upc-a":4,"./types/upc-e":5}],3:[function(_dereq_,module,exports){
