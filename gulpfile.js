@@ -3,16 +3,12 @@ var gulp = require('gulp'),
     rename = require("gulp-rename"),
     git = require('gulp-git'),
     browserify = require('gulp-browserify'),
-    inject = require('gulp-inject'),
-    codePath = {
-        server: 'index.js',
-        client: './lib/client/sp-barcode-converter.js'
-    };
+    inject = require('gulp-inject');
 
 gulp.task('default', ['dist']);
 
 gulp.task('dist', function () {
-    return gulp.src(codePath.server)
+    return gulp.src('index.js')
         .pipe(browserify({
             standalone: 'barcodeConverter'
         }))

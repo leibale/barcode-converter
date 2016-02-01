@@ -1,7 +1,9 @@
 {
   "name": "barcode-converter",
-  "version": "1.0.0",
-  "repository": "https://github.com/leibale/barcode-converter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leibale/barcode-converter.git"
+  },
   "keywords": [
     "barcode",
     "converter",
@@ -20,5 +22,19 @@
     "gulp-rename": "1.2.2",
     "gulp-uglify": "1.2.0",
     "gulp-browserify": "0.5.1"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/leibale/barcode-converter/issues"
+  },
+  "homepage": "https://github.com/leibale/barcode-converter#readme",
+  "version": "0.0.1",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test"
+  },
+  "author": "leibale eidelman <leibale1998@gmail.com>",
+  "license": "MIT"
 }
