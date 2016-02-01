@@ -30,6 +30,14 @@ function Type (name) {
     self.converters = {};
 }
 
+Type.prototype.convert = function (type, barcode) {
+    if (!this.converters[type]) {
+        throw new Error("I don't know how to convert");
+    }
+
+    return this.converters[type](barcode);
+};
+
 module.exports = Type;
 },{}],4:[function(_dereq_,module,exports){
 var Type = _dereq_('../type'),
