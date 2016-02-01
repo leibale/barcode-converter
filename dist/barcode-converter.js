@@ -12,14 +12,15 @@ module.exports = {
      * @param {String} fromType ('upc-a'/'upc-e')
      * @param {String} barcode
      * @param {String} toType ('upc-a'/'upc-e')
-     * @param {Function} callback (error, barcode)
+     *
+     * @return {String}
      */
-    convert: function (fromType, barcode, toType, callback) {
+    convert: function (fromType, barcode, toType) {
         if (!types[toType]) {
-            return callback(new Error('Unknown type ' + toType));
+            throw new Error('Unknown type ' + toType);
         }
 
-        types[toType].convert(fromType, barcode, callback);
+        types[toType].convert(fromType, barcode);
     }
 };
 },{"./types/upc-a":4,"./types/upc-e":5}],3:[function(_dereq_,module,exports){
@@ -29,20 +30,12 @@ function Type (name) {
     self.converters = {};
 }
 
-Type.prototype.convert = function (type, barcode, callback) {
-    if (!this.converters[type]) {
-        return callback(new Error("I don't know how to convert"));
-    }
-
-    return this.converters[type](barcode, callback);
-};
-
 module.exports = Type;
 },{}],4:[function(_dereq_,module,exports){
 var Type = _dereq_('../type'),
     upcE = new Type('upc-a');
 
-upcE.converters['upc-e'] = function (barcode, callback) {
+upcE.converters['upc-e'] = function (barcode) {
     switch (barcode.length) {
         case 6:
             break;
@@ -60,7 +53,7 @@ upcE.converters['upc-e'] = function (barcode, callback) {
             break;
 
         default:
-            return callback(new Error('Wrong size UPC-E'));
+            throw new Error('Wrong size UPC-E');
     }
 
     switch (barcode[5]) {
@@ -81,7 +74,7 @@ upcE.converters['upc-e'] = function (barcode, callback) {
             break;
     }
 
-    callback(null, barcode + getCheckDigit(barcode));
+    return barcode + getCheckDigit(barcode);
 };
 
 function getCheckDigit (barcode) {
@@ -103,7 +96,7 @@ module.exports = upcE;
 var Type = _dereq_('../type'),
     upcE = new Type('upc-e');
 
-upcE.converters['upc-a'] = function (barcode, callback) {
+upcE.converters['upc-a'] = function (barcode) {
     if (barcode.length < 12) {
         var holdString = '000000000000' + barcode;
         barcode = holdString.substring(holdString.length - 12, holdString.length);
@@ -111,20 +104,20 @@ upcE.converters['upc-a'] = function (barcode, callback) {
 
 
     if (barcode[0] != '0' && barcode[0] != '1') {
-        return callback(new Error('Invalid Number System (only 0 & 1 are valid);'));
+        throw new Error('Invalid Number System (only 0 & 1 are valid);');
     }
 
     if (barcode.substring(3, 6) == '000' || barcode.substring(3, 6) == '100' || barcode.substring(3, 6) == '200') {
-        return callback(null, barcode.substring(1, 3) + barcode.substring(8, 11) + barcode.substring(3, 4));
+        return barcode.substring(1, 3) + barcode.substring(8, 11) + barcode.substring(3, 4);
     } else if (barcode.substring(4, 6) == '00') {
-        return callback(null, barcode.substring(1, 4) + barcode.substring(9, 11) + '3');
+        return barcode.substring(1, 4) + barcode.substring(9, 11) + '3';
     } else if (barcode.substring(5, 6) == '0') {
-        return callback(null, barcode.substring(1, 5) + barcode.substring(10, 11) + '4');
+        return barcode.substring(1, 5) + barcode.substring(10, 11) + '4';
     } else if (barcode.substring(10,11) >= '5') {
-        return callback(null, barcode.substring(1, 6) + barcode.substring(10, 11));
+        return barcode.substring(1, 6) + barcode.substring(10, 11);
     }
 
-    return (new Error('Invalid UPC-E'));
+    throw new Error('Invalid UPC-E');
 };
 
 module.exports = upcE;
